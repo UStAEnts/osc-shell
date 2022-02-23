@@ -1,0 +1,43 @@
+[Unit]
+Description=osc-shell
+# When this service should be started in order, this means it needs to be started after the network service is available
+# this ensures you can actually do networking
+After=network.target
+
+# This controls service restarting limits. A service will only be allowed to be restarted Burst times within Interval seconds
+# so if this service fails and is restarted 10 times within 20 seconds, ubuntu will stop trying to restart it as its an 
+# indication that something has gone very wrong, tweak this to whatever works for your application
+StartLimitIntervalSec=20
+StartLimitBurst=10
+
+[Service]
+# Simple means that systemd should consider the service started as soon as ExecStart is forked from the initialisation process.     
+# This is done automatically and you shouldn't really have to change this 
+Type=simple
+# You can choose one of the following for this:
+#   no          = service will never be restarted automatically
+#   on-success  = service will be restarted if it exits with exit code 0 (or dies via SIGHUP, SIGINT, SIGTERM, SIGPIPE)
+#   on-failure  = restarted when exits with a non-zero exit code, is terminated by signal (not above), timeout or watchdog killing
+#   on-abnormal = restarted when terminated by signal (not above), operation times out, watchdog it triggered
+#   on-watchdog = restarted only if the watchdog timeout for the service expires
+#   on-abort    = restarted only if exits due to an uncaught signal not specified as a clean exit state
+#   always      = restarts whenever the process exits
+Restart=always
+# The amount of time to sleep before starting the service again
+RestartSec=10
+# The full command to start the service, it is best to use absolute paths to executables if you are unsure if they will be
+# available to resolve properly. For example, here I use node via NVM which uses bash aliases so not available to the service
+# user. Therefore use the full path to the executable
+ExecStart=/etc/ents/osc-shell
+
+# Redirect to a log file as well
+StandardOutput=append:/var/log/ents/osc-shell.out.log
+StandardError=append:/var/log/ents/osc-shell.err.log
+
+[Install]
+# This means that this service should be started as part of the multi-user setup (I think)
+# According to stackoverflow it means that this service should be started when all network services
+# are started up and logins are available, whether or not a GUI is enabled (as opposed to graphical.target)
+# This defines the conditions under which an automatic start may happen when the service is enabled
+# See here for more detail https://unix.stackexchange.com/questions/506347/why-do-most-systemd-examples-contain-wantedby-multi-user-target
+WantedBy=multi-user.target

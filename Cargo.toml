@@ -1,0 +1,16 @@
+[package]
+name = "osc-dispatcher"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rosc = "0.6.0"
+threadpool = "1.0"
+jsonschema = "0.15.0"
+dirs = "4.0.0"
+serde_json = "1.0.59"
+serde = { version = "1.0", features = ["derive"] }
+valico = "2"
+shell-words = "1.1.0"
