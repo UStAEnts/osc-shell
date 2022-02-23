@@ -17,6 +17,7 @@ Where `/path` is the OSC command address, and `echo $1` is the command. This als
 OSC types are fomatted as so
 
 |Type|Format|
+|--|--|
 |Int (0)|`0`|
 |Float (0.0) (1.3)|`0` `1.3`|
 |String (abc)|`"abc"`|
